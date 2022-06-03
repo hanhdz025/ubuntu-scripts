@@ -2,11 +2,8 @@ installed() {
   return $(dpkg-query -W -f '${Status}\n' "${1}" 2>&1|awk '/ok installed/{print 0;exit}{print 1}')
 }
 
-# first install
-sudo apt install -y curl git
-
 # install tools
-sudo apt install -y terminator flameshot
+sudo apt install -y curl git terminator flameshot
 
 # install docker
 if ! [[ $(which docker) && $(docker --version) ]]; then
