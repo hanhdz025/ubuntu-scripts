@@ -7,7 +7,7 @@ installed() {
 sudo apt install -y curl git
 
 # install tools
-sudo apt install terminator
+sudo apt install -y terminator flameshot
 
 # install docker
 if ! [[ $(which docker) && $(docker --version) ]]; then
