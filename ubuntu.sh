@@ -17,6 +17,11 @@ if ! [[ $(which docker) && $(docker --version) ]]; then
   sudo usermod -aG docker ${USER}
 fi
 
+# install zsh
+if ! installed zsh; then
+  sudo apt install -y zsh
+fi
+
 # install nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 source ~/.zshrc
@@ -45,10 +50,9 @@ fi
 docker run -d --name mariadb -p 3306:3306 -e MARIADB_ROOT_PASSWORD=root mariadb
 docker run -d --name redis -p 6379:6379 redis
 
-# install zsh
-sudo apt install -y zsh
+
 # ohmyzsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 # zsh plugins
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
