@@ -22,26 +22,6 @@ if ! [[ $(which docker) && $(docker --version) ]]; then
   sudo usermod -aG docker ${USER}
 fi
 
-# install zsh, ohmyzsh
-if ! installed zsh; then
-  echo "install zsh"
-  sudo apt install -y zsh
-  echo "install ohmyzsh"
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-  exec zsh
-  chsh -s $(which zsh)
-fi
-
-# install nvm
-if [ -n "$NVM_DIR" ]; then
-  echo "install nvm"
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-  source ~/.zshrc
-  nvm install --lts && node -v
-  npm install --global yarn && yarn -v
-  npm install --global pnpm && pnpm -v
-fi
-
 # install git-desktop
 if ! installed github-desktop; then
   echo "install github-desktop"
@@ -62,9 +42,15 @@ if ! installed ibus-bamboo; then
   env DCONF_PROFILE=ibus dconf write /desktop/ibus/general/preload-engines "['BambooUs', 'Bamboo']" && gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'Bamboo')]"
 fi
 
-# install some images
-#docker run -d --name mariadb -p 3306:3306 -e MARIADB_ROOT_PASSWORD=root mariadb
-#docker run -d --name redis -p 6379:6379 redis
+# install zsh, ohmyzsh
+if ! installed zsh; then
+  echo "install zsh"
+  sudo apt install -y zsh
+  echo "install ohmyzsh"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  exec zsh
+  chsh -s $(which zsh)
+fi
 
 # zsh plugins
 if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-nvm ]; then
@@ -73,5 +59,23 @@ if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-nvm ]; then
   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
   # add zsh-nvm zsh-autosuggestions zsh-syntax-highlighting
-  echo "plugins+=(zsh-nvm zsh-autosuggestions zsh-syntax-highlighting)" >> ~/.zshrc
+  #echo "plugins+=(zsh-nvm zsh-autosuggestions zsh-syntax-highlighting)" >> ~/.zshrc
 fi
+
+# install nvm
+if [ ! -n "$NVM_DIR" ]; then
+  echo "install nvm"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+  source ~/.zshrc
+fi
+
+if [ -n "$NVM_DIR" ]; then
+  echo "install node-yarn-pnpm"
+  nvm install --lts && node -v
+  npm install --global yarn && yarn -v
+  npm install --global pnpm && pnpm -v
+fi
+
+# install some images
+#docker run -d --name mariadb -p 3306:3306 -e MARIADB_ROOT_PASSWORD=root mariadb
+#docker run -d --name redis -p 6379:6379 redis
