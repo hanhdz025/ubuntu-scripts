@@ -21,14 +21,17 @@ fi
 if ! installed zsh; then
   sudo apt install -y zsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-  chsh -s $(which zsh)
+  sudo chsh -s $(which zsh)
+  exec zsh
 fi
 
 # install nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-source ~/.zshrc
-nvm install --lts && node -v
-npm install --global yarn && yarn -v
+if [ -n "$NVM_DIR" ]; then
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+  source ~/.zshrc
+  nvm install --lts && node -v
+  npm install --global yarn && yarn -v
+fi
 
 # install git-desktop
 if ! installed github-desktop; then
@@ -49,10 +52,14 @@ if ! installed ibus-bamboo; then
 fi
 
 # install some images
-docker run -d --name mariadb -p 3306:3306 -e MARIADB_ROOT_PASSWORD=root mariadb
-docker run -d --name redis -p 6379:6379 redis
+#docker run -d --name mariadb -p 3306:3306 -e MARIADB_ROOT_PASSWORD=root mariadb
+#docker run -d --name redis -p 6379:6379 redis
 
 # zsh plugins
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-# add zsh-autosuggestions zsh-syntax-highlighting
+if [ -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-nvm ]; then
+  git clone https://github.com/lukechilds/zsh-nvm ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-nvm
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  # add zsh-nvm zsh-autosuggestions zsh-syntax-highlighting
+  echo "plugins+=(zsh-nvm zsh-autosuggestions zsh-syntax-highlighting)" >> ~/.zshrc
+fi
