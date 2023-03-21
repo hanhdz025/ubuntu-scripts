@@ -19,7 +19,7 @@ if ! [[ $(which docker) && $(docker --version) ]]; then
   apt-cache policy docker-ce
   sudo apt install -y docker-ce
   #sudo systemctl status docker
-  sudo usermod -aG docker ${USER}
+  #sudo usermod -aG docker ${USER}
 fi
 
 # install git-desktop
@@ -65,7 +65,7 @@ fi
 # install nvm
 if [ ! -n "$NVM_DIR" ]; then
   echo "install nvm"
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
   source ~/.zshrc
 fi
 
