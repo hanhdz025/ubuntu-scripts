@@ -6,4 +6,7 @@ curl -s https://raw.githubusercontent.com/hanhdz025/auto-installer/main/ubuntu.s
 
 ```sh
 sudo service docker restart
+
+# telegram
+sudo apt install telegram-desktop
 ```
