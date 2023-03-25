@@ -9,4 +9,7 @@ sudo service docker restart
 
 # telegram
 sudo apt install telegram-desktop
+
+# JetBrains Toolbox App
+sudo apt install libfuse2
 ```
