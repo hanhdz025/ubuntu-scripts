@@ -25,10 +25,10 @@ fi
 # install git-desktop
 if ! installed github-desktop; then
   echo "install github-desktop"
-  wget -qO - https://mirror.mwt.me/ghd/gpgkey | sudo tee /etc/apt/trusted.gpg.d/shiftkey-desktop.asc > /dev/null
-  #sudo sh -c 'echo "deb [arch=amd64] https://packagecloud.io/shiftkey/desktop/any/ any main" > /etc/apt/sources.list.d/packagecloud-shiftkey-desktop.list'
-  sudo sh -c 'echo "deb [arch=amd64] https://mirror.mwt.me/ghd/deb/ any main" > /etc/apt/sources.list.d/packagecloud-shiftkey-desktop.list'
-  sudo apt update && sudo apt install -y github-desktop
+  #@shiftkey package feed
+  wget -qO - https://apt.packages.shiftkey.dev/gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/shiftkey-packages.gpg > /dev/null
+  sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/shiftkey-packages.gpg] https://apt.packages.shiftkey.dev/ubuntu/ any main" > /etc/apt/sources.list.d/shiftkey-packages.list'
+  sudo apt update && sudo apt install github-desktop -y
 fi
 
 # install ibus-bamboo
@@ -36,7 +36,7 @@ if ! installed ibus-bamboo; then
   echo "install ibus-bamboo"
   sudo add-apt-repository ppa:bamboo-engine/ibus-bamboo
   sudo apt-get update
-  sudo apt-get install -y ibus ibus-bamboo --install-recommends
+  sudo apt-get install ibus ibus-bamboo --install-recommends -y
   ibus restart
   # Đặt ibus-bamboo làm bộ gõ mặc định
   env DCONF_PROFILE=ibus dconf write /desktop/ibus/general/preload-engines "['BambooUs', 'Bamboo']" && gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'Bamboo')]"
@@ -45,7 +45,7 @@ fi
 # install zsh, ohmyzsh
 if ! installed zsh; then
   echo "install zsh"
-  sudo apt install -y zsh
+  sudo apt install zsh -y
   echo "install ohmyzsh"
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   exec zsh
