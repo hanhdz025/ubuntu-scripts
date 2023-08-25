@@ -15,4 +15,7 @@ sudo apt install telegram-desktop
 
 # JetBrains Toolbox App
 sudo apt install libfuse2
+
+# Set default terminal
+sudo update-alternatives --config x-terminal-emulator
 ```
