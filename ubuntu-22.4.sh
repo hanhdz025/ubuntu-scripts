@@ -6,6 +6,11 @@ echo() {
   command printf %s\\n "$*" 2>/dev/null
 }
 
+reloadBash() {
+  source ~/.zshrc
+  source ~/.bashrc
+}
+
 # install tools
 sudo apt install -y curl git terminator flameshot
 
@@ -70,7 +75,7 @@ fi
 if [ ! -n "$NVM_DIR" ]; then
   echo "install nvm"
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-  source ~/.zshrc
+  reloadBash
 fi
 
 if [ -n "$NVM_DIR" ]; then
